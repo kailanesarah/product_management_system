@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Marcas
+{% endblock %}
+
+{% block content %}
+
+<h1>Lista de Marcas</h1>
+<header>
+    <form class="input-group input-group-sm mb-3" method="get" action="{% url 'brand_list_view' %}">
+        <input type="text" class="form-control" aria-label="Sizing example input"
+            aria-describedby="inputGroup-sizing-sm" value="{{request.GET.name}}" name="name">
+        <input class="btn btn-primary" type="submit" value="Submit">
+    </form>
+</header>
+<main>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Number</th>
+                <th scope="col">ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Created_at</th>
+                <th scope="col">Updated_at</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            {% for brand in brands %}
+            <tr>
+                <th scope="row">{{forloop.counter}}</th>
+                <td>{{brand.id}}</td>
+                <td>{{brand.name}}</td>
+                <td>{{brand.created_at}}</td>
+                <td>{{brand.updated_at}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</main>
+{% endblock %}
