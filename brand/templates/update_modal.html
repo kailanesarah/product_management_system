@@ -1,0 +1,43 @@
+{% load custom_tags %}
+<div class="modal fade" id="modalMarca{{ brand.pk }}" tabindex="-1" aria-labelledby="modalLabel{{ brand.pk }}"
+  aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form class="brandForm" method="post" action="{% url 'brand_update_view' brand.pk %}"
+        enctype="multipart/form-data">
+        {% load crispy_forms_tags %}
+        {% csrf_token %}
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalLabel{{ brand.pk }}">Editar {{ brand.name }}</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+        </div>
+        <div class="modal-body">
+          {% crispy form %}
+        </div>
+      </form> 
+    </div>
+  </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+  $(document).on('submit', '.brandForm', function (e) {
+    e.preventDefault();
+
+    let form = $(this);
+    let modal = form.closest('.modal');
+
+    $.ajax({
+      type: form.attr('method'),
+      url: form.attr('action'),
+      data: form.serialize(),
+      success: function (response) {
+        modal.modal('hide');
+        location.reload();  // Ou atualize parte da página
+      },
+      error: function (xhr) {
+        modal.find('.modal-content').html(xhr.responseText);  // Aqui volta o form com erro
+      }
+    });
+  });
+</script>

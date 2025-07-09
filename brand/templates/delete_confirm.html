@@ -1,0 +1,44 @@
+<!-- Modal delete -->
+<div class="modal fade" id="modalDeleteMarca{{ brand.pk }}" tabindex="-1"
+    aria-labelledby="modalDeleteLabel{{ brand.pk }}" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form class="brandDeleteForm" method="post" action="{% url 'brand_delete_view' brand.pk %}">
+                {% csrf_token %}
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalDeleteLabel{{ brand.pk }}">Confirmar exclusão</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Tem certeza que deseja excluir a marca <strong>{{ brand.name }}</strong>?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-danger">Excluir</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).on('submit', '.brandDeleteForm', function (e) {
+        e.preventDefault();
+
+        let form = $(this);
+        let modal = form.closest('.modal');
+
+        $.ajax({
+            type: form.attr('method'),
+            url: form.attr('action'),
+            data: form.serialize(),
+            success: function (response) {
+                modal.modal('hide');
+                location.reload(); 
+            },
+            error: function (xhr) {
+                alert('Erro ao deletar. Tente novamente.');
+            }
+        });
+    });
+</script>
