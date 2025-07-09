@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}
+cadastre sua marca
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    {% load crispy_forms_tags %}
+
+    <form method="post" enctype="multipart/form-data" action="{% url 'brand_create_view' %}">
+        {% csrf_token %}
+        {% crispy form %}
+    </form>
+</div>
+{% endblock %}
